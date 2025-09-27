@@ -1,13 +1,38 @@
 ﻿services:
-  
-  fitapi-1:
-    image: fitapi-1
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "abcDEF123!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlvolume:/var/opt/mssql
+      
+  fitapi:
+    image: fitapi
     build:
       context: .
       dockerfile: FitAPI/Dockerfile
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=mssql,1433;Database=FitDB;User Id=sa;Password=abcDEF123!TrustServerCertificate=True;"
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_URLS: "http://+:5000"
+    ports:
+      - 5000:5000
+    depends_on:
+      - mssql
 
   fitui:
     image: fitui
     build:
       context: .
       dockerfile: FitUI/Dockerfile
+    environment:
+      ApiBaseUrl: "http://fitapi:5000"
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_URLS: "http://+:8080"
+    ports:
+      - 5001:8080
+volumes:
+  sqlvolume:
