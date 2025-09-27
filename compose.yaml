@@ -1,0 +1,13 @@
+﻿services:
+  
+  fitapi-1:
+    image: fitapi-1
+    build:
+      context: .
+      dockerfile: FitAPI/Dockerfile
+
+  fitui:
+    image: fitui
+    build:
+      context: .
+      dockerfile: FitUI/Dockerfile
