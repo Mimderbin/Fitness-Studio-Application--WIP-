@@ -1,29 +1,31 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using FitAPI.Services;
 
 
 namespace FitAPI.Models;
 
-public class Kunde
+public class Kunde : IHasPassword
 {
-    [Key]
     public int Id { get; set; }
-    
+
     [Required]
-    public string Vorname { get; set; }
-    
+    public string Vorname { get; set; } = string.Empty;
+
     [Required]
-    public string Name { get; set; }
-    
+    public string Name { get; set; } = string.Empty;
+
     [Required]
-    public DateTime MemberSince {get; set;}
-    
+    public DateTime MemberSince { get; set; }
+
     [Required]
-    public DateTime SubscriptionValidUntil { get; set;}
+    public DateTime SubscriptionValidUntil { get; set; }
+
     [Required]
-    public string Email { get; set; }
-    
-    [Required]
-    public string PasswordHash { get; set; }
+    [EmailAddress]
+    public string Email { get; set; } = string.Empty;
+
     public string? Phone { get; set; }
-    
+
+    [Required]
+    public string PasswordHash { get; set; } = string.Empty;
 }

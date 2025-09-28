@@ -27,9 +27,13 @@ public class AppDbContext : DbContext
 
             }
         );
-        modelBuilder.Entity<Kunde>()
-            .HasIndex(k => k.Email)
-            .IsUnique();
+        modelBuilder.Entity<Kunde>(entity =>
+        {
+            entity.HasIndex(k => k.Email).IsUnique();
+            entity.Property(k => k.MemberSince).HasDefaultValueSql("getutcdate()");
+        });
+
+
 
         modelBuilder.Entity<Admin>().HasData(
             new Admin

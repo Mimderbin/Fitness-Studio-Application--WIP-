@@ -2,9 +2,11 @@
 
 namespace FitAPI.Services;
 
-public class PasswordServices
+
+public class PasswordService : IPasswordService
 {
-    private static readonly int _iterations = 100;
+    
+    private static readonly int _iterations = 100; // Should be a lot higher in production
     private static readonly int _hashLength = 32;
     
     private static byte[] _GenerateSalt()
@@ -14,7 +16,7 @@ public class PasswordServices
         return salt;
     }
     
-    public static String HashPassword(String password)
+    public String HashPassword(String password)
     {
         byte[] salt = _GenerateSalt();
         using var pbkdf2 = new Rfc2898DeriveBytes(password, salt, _iterations, HashAlgorithmName.SHA256);
@@ -22,7 +24,7 @@ public class PasswordServices
         return $"{_iterations}.{Convert.ToBase64String(salt)}.{Convert.ToBase64String(hash)}";
     }
     
-    public static bool VerifyPassword(string password, string storedHash)
+    public bool VerifyPassword(string password, string storedHash)
     {
         var parts = storedHash.Split('.');
         int iterations = int.Parse(parts[0]);

@@ -1,15 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using FitAPI.Services;
 
 namespace FitAPI.Models;
 
-public class Admin
+public class Admin : IHasPassword
 {
-    [Key]
     public int Id { get; set; }
+
     [Required]
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
+
     [Required]
-    public string Email { get; set; }
+    [EmailAddress]
+    public string Email { get; set; } = string.Empty;
+
     [Required]
-    public string PasswordHash { get; set; }
+    public string PasswordHash { get; set; } = string.Empty;
 }
