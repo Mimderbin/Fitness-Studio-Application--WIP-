@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using FitAPI.Services;
 
 
@@ -25,7 +26,8 @@ public class Kunde : IHasPassword
     public string Email { get; set; } = string.Empty;
 
     public string? Phone { get; set; }
-
+    
+    [JsonIgnore]
     [Required]
     public string PasswordHash { get; set; } = string.Empty;
 }

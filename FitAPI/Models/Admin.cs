@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using FitAPI.Services;
 
 namespace FitAPI.Models;
@@ -14,6 +15,7 @@ public class Admin : IHasPassword
     [EmailAddress]
     public string Email { get; set; } = string.Empty;
 
+    [JsonIgnore]
     [Required]
     public string PasswordHash { get; set; } = string.Empty;
 }
