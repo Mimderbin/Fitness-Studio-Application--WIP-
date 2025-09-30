@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using FitAPI.Models;
+using FitAPI.Services;
 
 namespace FitAPI.Data;
 public class AppDbContext : DbContext
@@ -13,27 +14,27 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        var passwordService = new PasswordService();
+
         modelBuilder.Entity<Kunde>().HasData(
             new Kunde
             {
                 Id = 1,
                 Vorname = "Max",
                 Name = "Mustermann",
-                MemberSince = new DateTime(2025, 1, 1),
-                SubscriptionValidUntil = new DateTime(2026, 1, 1),
+                MemberSince = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                SubscriptionValidUntil = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero),
                 Email = "max@example.com",
-                PasswordHash = "PLACEHOLDER_HASH",
-                Phone = "123456789"
-
+                Phone = "123456789",
+                PasswordHash = "password" 
             }
         );
-        modelBuilder.Entity<Kunde>(entity =>
+
+        modelBuilder.Entity<Kunde>(e =>
         {
-            entity.HasIndex(k => k.Email).IsUnique();
-            entity.Property(k => k.MemberSince).HasDefaultValueSql("getutcdate()");
+            e.HasIndex(k => k.Email).IsUnique();
+            e.Property(k => k.MemberSince).HasDefaultValueSql("getutcdate()");
         });
-
-
 
         modelBuilder.Entity<Admin>().HasData(
             new Admin
@@ -41,12 +42,14 @@ public class AppDbContext : DbContext
                 Id = 1,
                 Name = "SuperAdmin",
                 Email = "Admin@example.com",
-                PasswordHash = "PLACEHOLDER_HASH"
+                PasswordHash = "10000.k5lGr0JPTaQ=.+GVujDgQ1dNYx7ZIl9N5EqhHj/E=" 
             }
         );
+
         modelBuilder.Entity<Admin>()
             .HasIndex(a => a.Email)
             .IsUnique();
     }
+
 
 }

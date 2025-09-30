@@ -77,28 +77,37 @@ public class CrudController<T> : ODataController where T : class
         return Updated(entity);
     }
     // PUT
-    public virtual async Task<IActionResult> Put([FromODataUri] int key, [FromBody] T entity, CancellationToken ct)
-    {
-        if (entity == null)
-            return BadRequest("Request body is missing.");
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-        if (EF.Property<int>(entity, "Id") != key)
-            return BadRequest("Entity ID in URL does not match request body.");
+public virtual async Task<IActionResult> Put([FromODataUri] int key, [FromBody] T entity, CancellationToken ct)
+{
+    if (entity == null)
+        return BadRequest("Request body is missing.");
+    if (!ModelState.IsValid)
+        return BadRequest(ModelState);
 
-        _context.Entry(entity).State = EntityState.Modified;
-        try
-        {
-            await _context.SaveChangesAsync(ct);
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!await _validation.EntityExists(key, ct))
-                return NotFound();
-            throw;
-        }
-        return Updated(entity);
+    var idProp = typeof(T).GetProperty("Id");
+    if (idProp == null)
+        return BadRequest("Entity type does not have an Id property.");
+
+    var idValue = idProp.GetValue(entity);
+    if (idValue == null || !int.TryParse(idValue.ToString(), out var entityId))
+        return BadRequest("Entity Id is missing or not an integer.");
+
+    if (entityId != key)
+        return BadRequest("Entity ID in URL does not match request body.");
+
+    _context.Entry(entity).State = EntityState.Modified;
+    try
+    {
+        await _context.SaveChangesAsync(ct);
     }
+    catch (DbUpdateConcurrencyException)
+    {
+        if (!await _validation.EntityExists(key, ct))
+            return NotFound();
+        throw;
+    }
+    return Updated(entity);
+}
     // DELETE
     public virtual async Task<IActionResult> Delete([FromODataUri] int key, CancellationToken ct)
     {

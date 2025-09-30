@@ -9,13 +9,12 @@ public class Admin : IHasPassword
     public int Id { get; set; }
 
     [Required]
-    public string Name { get; set; } = string.Empty;
+    public string Name { get; set; } 
 
     [Required]
     [EmailAddress]
-    public string Email { get; set; } = string.Empty;
-
-    [JsonIgnore]
+    public string Email { get; set; }
+    
     [Required]
-    public string PasswordHash { get; set; } = string.Empty;
+    public string PasswordHash { get; set; } 
 }
