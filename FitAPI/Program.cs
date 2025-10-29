@@ -12,10 +12,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped(typeof(IValidationService<>), typeof(ValidationService<>));
 builder.Services.AddScoped<IPasswordService, PasswordService>();
 
-builder.Services.AddDbContext<AppDbContext>(opt =>
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-        .LogTo(Console.WriteLine, LogLevel.Information)
-        .EnableSensitiveDataLogging());
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+        sql => sql.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null));
+});
+
 
 builder.Services.AddControllers(options =>
     options.Filters.Add(new EnableQueryAttribute
@@ -51,15 +53,23 @@ using (var scope = app.Services.CreateScope())
 
     try
     {
-        db.Database.Migrate();
-        logger.LogInformation("Database migration applied successfully.");
+        if (db.Database.GetPendingMigrations().Any())
+        {
+            db.Database.Migrate();
+            logger.LogInformation("Database migration applied successfully.");
+        }
+        else
+        {
+            logger.LogInformation("No pending migrations; database is up to date.");
+        }
     }
     catch (Exception ex)
     {
         logger.LogError(ex, "An error occurred while applying database migrations.");
-        throw;
     }
+
 }
+
 
 app.UseDeveloperExceptionPage();
 

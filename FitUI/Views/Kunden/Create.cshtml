@@ -1,0 +1,61 @@
+﻿@model FitUI.Models.KundeCreateViewModel
+@{
+    ViewData["Title"] = "Neuen Kunden anlegen";
+}
+
+<h1>Neuen Kunden anlegen</h1>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Vorname" class="form-label"></label>
+        <input asp-for="Vorname" class="form-control" />
+        <span asp-validation-for="Vorname" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Phone" class="form-label"></label>
+        <input asp-for="Phone" class="form-control" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="MemberSince" class="form-label"></label>
+        <input asp-for="MemberSince" class="form-control" type="date" />
+        <span asp-validation-for="MemberSince" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="SubscriptionValidUntil" class="form-label"></label>
+        <input asp-for="SubscriptionValidUntil" class="form-control" type="date" />
+        <span asp-validation-for="SubscriptionValidUntil" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Password" class="form-label"></label>
+        <input asp-for="Password" class="form-control" type="password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    
+    <div class="mb-3">
+        <label class="form-label" for="ConfirmPassword">Confirm Password</label>
+        <input class="form-control" type="password" id="ConfirmPassword" name="ConfirmPassword" />
+    </div>
+
+
+    <button type="submit" class="btn btn-success">Speichern</button>
+    <a asp-action="Index" class="btn btn-secondary">Abbrechen</a>
+</form>

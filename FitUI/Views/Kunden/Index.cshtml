@@ -1,0 +1,45 @@
+﻿@model IReadOnlyList<FitUI.Models.KundeListItemViewModel>
+
+@{
+    ViewData["Title"] = "Kundenverwaltung";
+}
+
+<h1>Kunden</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Neuen Kunden anlegen</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Vorname</th>
+        <th>Name</th>
+        <th>E-Mail</th>
+        <th>Telefon</th>
+        <th>Mitglied seit</th>
+        <th>Abo gültig bis</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var k in Model)
+    {
+        <tr>
+            <td>@k.Vorname</td>
+            <td>@k.Name</td>
+            <td>@k.Email</td>
+            <td>@k.Phone</td>
+            <td>@k.MemberSince.ToString("d")</td>
+            <td>@k.SubscriptionValidUntil.ToString("d")</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@k.Id" class="btn btn-sm btn-warning">Bearbeiten</a>
+                <form asp-action="Delete" asp-route-id="@k.Id" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-sm btn-danger"
+                            onclick="return confirm('Kunde wirklich löschen?');">Löschen</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

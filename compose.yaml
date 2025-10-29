@@ -5,7 +5,7 @@
       ACCEPT_EULA: "Y"
       SA_PASSWORD: "abcDEF123!"
     ports:
-      - "1433:1433"
+      - "1433:1433" 
     volumes:
       - sqlvolume:/var/opt/mssql
       
@@ -30,7 +30,7 @@
       context: .
       dockerfile: FitUI/Dockerfile
     environment:
-      ApiBaseUrl: "http://fitapi:5000"
+      ApiBaseUrl: "http://fitapi:5000/odata/"
       ASPNETCORE_ENVIRONMENT: "Development"
       ASPNETCORE_URLS: "http://+:8080"
     ports:

@@ -15,15 +15,14 @@ public class UserController<T> : CrudController<T> where T : class, IHasPassword
         _passwordService = passwordService;
     }
 
-    public override async Task<IActionResult> Post([FromBody] T entity, CancellationToken ct)
+    public override async Task<IActionResult> Post([FromBody] T entity, CancellationToken ct = default)
     {
         if (entity == null)
             return BadRequest("Request body is missing.");
 
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
-
-        // Hash the password before saving
+        
         entity.PasswordHash = _passwordService.HashPassword(entity.PasswordHash);
 
         _context.Set<T>().Add(entity);
@@ -32,7 +31,7 @@ public class UserController<T> : CrudController<T> where T : class, IHasPassword
         return Created(entity);
     }
 
-    public override async Task<IActionResult> Put([FromODataUri] int key, [FromBody] T entity, CancellationToken ct)
+    public override async Task<IActionResult> Put([FromODataUri] int key, [FromBody] T entity, CancellationToken ct = default)
     {
         if (entity == null)
             return BadRequest("Request body is missing.");
@@ -40,8 +39,7 @@ public class UserController<T> : CrudController<T> where T : class, IHasPassword
             return BadRequest(ModelState);
         if (EF.Property<int>(entity, "Id") != key)
             return BadRequest("Entity ID in URL does not match request body.");
-
-        // Hash password before updating
+        
         entity.PasswordHash = _passwordService.HashPassword(entity.PasswordHash);
 
         _context.Entry(entity).State = EntityState.Modified;

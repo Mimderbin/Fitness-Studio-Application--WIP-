@@ -1,0 +1,54 @@
+﻿@model FitUI.Models.KundeEditViewModel
+@{
+    ViewData["Title"] = "Kunde bearbeiten";
+}
+
+<h1>Kunde bearbeiten</h1>
+
+<form asp-action="Edit" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label asp-for="Vorname" class="form-label"></label>
+        <input asp-for="Vorname" class="form-control" />
+        <span asp-validation-for="Vorname" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Phone" class="form-label"></label>
+        <input asp-for="Phone" class="form-control" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="MemberSince" class="form-label"></label>
+        <input asp-for="MemberSince" class="form-control" type="date" />
+        <span asp-validation-for="MemberSince" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="SubscriptionValidUntil" class="form-label"></label>
+        <input asp-for="SubscriptionValidUntil" class="form-control" type="date" />
+        <span asp-validation-for="SubscriptionValidUntil" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Speichern</button>
+    <a asp-action="Index" class="btn btn-secondary">Abbrechen</a>
+</form>
+
+<p>
+    <a asp-action="ChangePassword" asp-route-id="@Model.Id" class="btn btn-warning">Passwort ändern</a>
+</p>    

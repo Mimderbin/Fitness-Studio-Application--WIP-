@@ -36,7 +36,7 @@ public class CrudController<T> : ODataController where T : class
         return SingleResult.Create(result);
     }
     // POST
-    public virtual async Task<IActionResult> Post([FromBody] T entity, CancellationToken ct)
+    public virtual async Task<IActionResult> Post([FromBody] T entity, CancellationToken ct = default)
     {
         if (entity == null)
             return BadRequest("Request body is missing.");
@@ -50,7 +50,7 @@ public class CrudController<T> : ODataController where T : class
         return Created(entity);
     }
     // PATCH
-    public virtual async Task<IActionResult> Patch([FromODataUri] int key, [FromBody] Delta<T> patch, CancellationToken ct)
+    public virtual async Task<IActionResult> Patch([FromODataUri] int key, [FromBody] Delta<T> patch, CancellationToken ct = default)
     {
         if (patch == null)
             return BadRequest("Request body is missing.");
@@ -77,7 +77,7 @@ public class CrudController<T> : ODataController where T : class
         return Updated(entity);
     }
     // PUT
-public virtual async Task<IActionResult> Put([FromODataUri] int key, [FromBody] T entity, CancellationToken ct)
+public virtual async Task<IActionResult> Put([FromODataUri] int key, [FromBody] T entity, CancellationToken ct = default)
 {
     if (entity == null)
         return BadRequest("Request body is missing.");
@@ -109,7 +109,7 @@ public virtual async Task<IActionResult> Put([FromODataUri] int key, [FromBody] 
     return Updated(entity);
 }
     // DELETE
-    public virtual async Task<IActionResult> Delete([FromODataUri] int key, CancellationToken ct)
+    public virtual async Task<IActionResult> Delete([FromODataUri] int key, CancellationToken ct = default)
     {
         var entity = await _context.Set<T>().FindAsync(new object[] { key }, ct);
         
